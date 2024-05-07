@@ -81,8 +81,8 @@ test = [
   "rangehttpserver"
 ]
 test-wasm = [
+  "pandas",
   "minio",
-  "fsspec-xrootd",
   "s3fs",
   "paramiko",
   "pytest>=6",
