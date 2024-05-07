@@ -104,7 +104,7 @@ jobs:
           source .venv-pyodide/bin/activate
           ls -l dist
           python -m pip install dist/*.whl
-          python -m pip install pytest awkward
+          python -m pip install pytest awkward scikit-hep-testdata
           python -m pip install .
           python -c "import sys; print(sys.platform)"
 
