@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - new-emscripten-ci
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -73,7 +73,7 @@ jobs:
           python-version: ${{ needs.pyodide-python-version.outputs.python-version }}
 
       - name: Install pyodide-build
-        run: python3 -m pip install pyodide-build==0.23.3 pydantic<2
+        run: python3 -m pip install pyodide-build==0.23.3 "pydantic<2"
 
       - name: Determine EMSDK version
         id: compute-emsdk-version
