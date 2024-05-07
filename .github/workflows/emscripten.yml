@@ -105,7 +105,7 @@ jobs:
           ls -l dist
           python -m pip install dist/*.whl
           python -m pip install pytest awkward scikit-hep-testdata
-          python -m pip install .[test]
+          python -m pip install .[test-wasm]
           python -c "import sys; print(sys.platform)"
 
       - name: Test

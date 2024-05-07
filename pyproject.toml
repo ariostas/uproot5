@@ -80,6 +80,18 @@ test = [
   "scikit-hep-testdata",
   "rangehttpserver"
 ]
+test-wasm = [
+  "minio",
+  "fsspec-xrootd",
+  "s3fs",
+  "paramiko",
+  "pytest>=6",
+  "pytest-timeout",
+  "pytest-rerunfailures",
+  "requests",
+  "scikit-hep-testdata",
+  "rangehttpserver"
+]
 xrootd = ["fsspec-xrootd"]
 
 [project.urls]
