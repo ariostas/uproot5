@@ -86,7 +86,6 @@ test-wasm = [
   "s3fs",
   "paramiko",
   "pytest>=6",
-  "pytest-timeout",
   "pytest-rerunfailures",
   "requests",
   "scikit-hep-testdata",
