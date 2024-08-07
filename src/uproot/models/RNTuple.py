@@ -577,9 +577,9 @@ in file {self.file.file_path}"""
                     if len(invalid) > 0:
                         kindex = numpy.delete(kindex, invalid)
                         tags = numpy.delete(tags, invalid)
-                        invalid -= numpy.arange(len(invalid), dtype=numpy.int64)
+                        invalid -= numpy.arange(len(invalid))
                         optional_index = numpy.insert(
-                            numpy.arange(len(kindex)), invalid, -1
+                            numpy.arange(len(kindex), dtype=numpy.int64), invalid, -1
                         )
                     else:
                         optional_index = numpy.arange(len(kindex), dtype=numpy.int64)
