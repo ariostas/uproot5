@@ -577,12 +577,12 @@ in file {self.file.file_path}"""
                     if len(invalid) > 0:
                         kindex = numpy.delete(kindex, invalid)
                         tags = numpy.delete(tags, invalid)
-                        invalid -= numpy.arange(len(invalid))
+                        invalid -= numpy.arange(len(invalid), dtype=numpy.int64)
                         optional_index = numpy.insert(
                             numpy.arange(len(kindex)), invalid, -1
                         )
                     else:
-                        optional_index = numpy.arange(len(kindex))
+                        optional_index = numpy.arange(len(kindex), dtype=numpy.int64)
                     container_dict[f"{key}-index"] = optional_index
                     container_dict[f"{key}-union-index"] = kindex
                     container_dict[f"{key}-union-tags"] = tags
