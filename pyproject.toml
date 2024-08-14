@@ -81,6 +81,7 @@ test = [
   "rangehttpserver"
 ]
 test-wasm = [
+  "xxhash",
   "minio",
   "aiohttp",
   "fsspec-xrootd",
