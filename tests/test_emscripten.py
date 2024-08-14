@@ -3,7 +3,7 @@
 import sys
 import pytest
 
-@pytest.mark.skipif("emscripten" in sys.platform,
+@pytest.mark.skipif(sys.platform != "emscripten",
                     reason="only test on emscripten")
 def test_http_wasm():
     url = "https://github.com/scikit-hep/scikit-hep-testdata/raw/main/src/skhep_testdata/data/DAOD_TRUTH3_RC2.root"

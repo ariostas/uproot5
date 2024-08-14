@@ -48,7 +48,6 @@ jobs:
       - name: Test
         run: |
           source .venv-pyodide/bin/activate
-          python -c "import skhep_testdata; import uproot; filename = skhep_testdata.data_path('test_ntuple_extension_columns.root'); f = uproot.open(filename); obj = f['EventData']; print(obj.arrays())"
           # run wasm-specific test
           python -m pytest -vv -p no:cacheprovider --timeout 0 tests/test_emscripten.py
           # run hand-picked test compateble with wasm
