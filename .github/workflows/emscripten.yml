@@ -50,5 +50,5 @@ jobs:
       - name: Test
         run: |
           source .venv-pyodide/bin/activate
-          python -c "import skhep_testdata; import uproot; filename = skhep_testdata.data_path('test_ntuple_extension_columns.root'); f = uproot.open(filename); obj = f["EventData"]; obj.arrays()"
+          python -c "import skhep_testdata; import uproot; filename = skhep_testdata.data_path('test_ntuple_extension_columns.root'); f = uproot.open(filename); obj = f['EventData']; obj.arrays()"
           python -m pytest -p no:cacheprovider --timeout 0 -vv tests --reruns 3 --reruns-delay 30 --only-rerun "(?i)http|timeout|connection"
