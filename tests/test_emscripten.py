@@ -7,6 +7,6 @@ import pytest
                     reason="only test on emscripten")
 def test_http_wasm():
     url = "https://github.com/scikit-hep/scikit-hep-testdata/raw/main/src/skhep_testdata/data/DAOD_TRUTH3_RC2.root"
-    with uproot.open(f"simplecache::{url}") as f:
+    with uproot.open(url) as f:
         ntpl = f["RNT:CollectionTree"]
         a = ntpl.arrays()
