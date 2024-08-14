@@ -7,7 +7,7 @@ import uproot
 @pytest.mark.skipif(sys.platform != "emscripten",
                     reason="only test on emscripten")
 def test_http_wasm():
-    url = "https://github.com/scikit-hep/scikit-hep-testdata/raw/main/src/skhep_testdata/data/DAOD_TRUTH3_RC2.root"
+    url = "http://github.com/scikit-hep/scikit-hep-testdata/raw/main/src/skhep_testdata/data/DAOD_TRUTH3_RC2.root"
     with uproot.open(url, handler=uproot.HTTPSource) as f:
         ntpl = f["RNT:CollectionTree"]
         a = ntpl.arrays()
