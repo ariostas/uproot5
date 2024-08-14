@@ -92,7 +92,7 @@ test-wasm = [
   "requests",
   "scikit-hep-testdata",
   "rangehttpserver",
-  pyodide-http
+  "pyodide-http"
 ]
 xrootd = ["fsspec-xrootd"]
 
