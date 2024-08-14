@@ -11,70 +11,19 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  X86_64_PYTHON_VERSION: 3.11.0
-  SOURCE_DATE_EPOCH: '1668811211'
-
 jobs:
-  pyodide-python-version:
-    name: Determine Pyodide Python version
-    runs-on: ubuntu-22.04
-    outputs:
-      python-version: ${{ steps.retrieve-python-version.outputs.python-version }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Cache python version
-        id: cache-pyodide-python-version
-        uses: actions/cache@v4
-        with:
-          path: pyodide-python-version
-          key: ${{ runner.os }}-docs-pyodide-python-version-${{ hashFiles('docs/requirements-wasm.txt') }}
-
-      - name: Setup Python
-        if: steps.cache-pyodide-python-version.outputs.cache-hit != 'true'
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.X86_64_PYTHON_VERSION }}
-
-      - name: Install dependencies
-        if: steps.cache-pyodide-python-version.outputs.cache-hit != 'true'
-        run: python3 -m pip install pyodide-build==0.23.3 "pydantic<2"
-
-      - name: Determine Python version
-        if: steps.cache-pyodide-python-version.outputs.cache-hit != 'true'
-        id: compute-python-version
-        run: |
-          # Save Python version
-          PYTHON_VERSION=$(pyodide config get python_version)
-          echo $PYTHON_VERSION > pyodide-python-version
-
-      - name: Retrieve Python version
-        id: retrieve-python-version
-        run: |
-          PYTHON_VERSION=$(cat pyodide-python-version)
-          echo "python-version=$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
-
-
   build-and-test:
     name: Build and test with Emscripten
-    runs-on: ubuntu-22.04
-    needs: [pyodide-python-version]
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ needs.pyodide-python-version.outputs.python-version }}
-
+          python-version: "3.11"
       - name: Install pyodide-build
-        run: python3 -m pip install pyodide-build==0.23.3 "pydantic<2"
-
+        run: python3 -m pip install pyodide-build==0.28.0 "pydantic<2"
       - name: Determine EMSDK version
         id: compute-emsdk-version
         run: |
@@ -83,24 +32,19 @@ jobs:
           # Save EMSDK version
           EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version)
           echo "emsdk-version=$EMSCRIPTEN_VERSION" >> $GITHUB_OUTPUT
-
       - name: Install EMSDK
         uses: mymindstorm/setup-emsdk@v14
         with:
           version: ${{ steps.compute-emsdk-version.outputs.emsdk-version }}
-
       - name: Build
         run: pyodide build
-
       - name: Set up Pyodide virtual environment
         run: |
           pyodide venv .venv-pyodide
           source .venv-pyodide/bin/activate
-          ls -l dist
           python -m pip install pytest pytest-timeout awkward-cpp awkward scikit-hep-testdata boost-histogram
           python -m pip install .[test-wasm]
           python -c "import sys; print(sys.platform)"
-
       - name: Test
         run: |
           source .venv-pyodide/bin/activate
