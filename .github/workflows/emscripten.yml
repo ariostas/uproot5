@@ -21,7 +21,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: Install pyodide-build
         run: python3 -m pip install pyodide-build==0.28.0 "pydantic<2"
       - name: Determine EMSDK version
