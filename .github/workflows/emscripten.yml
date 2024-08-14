@@ -42,7 +42,9 @@ jobs:
         run: |
           pyodide venv .venv-pyodide
           source .venv-pyodide/bin/activate
-          python -m pip install pytest pytest-timeout awkward-cpp awkward scikit-hep-testdata boost-histogram pyodide-http
+          python -m pip install pytest pytest-timeout awkward-cpp awkward boost-histogram pyodide-http
+          git clone https://github.com/scikit-hep/scikit-hep-testdata.git
+          python -m pip install -e scikit-hep-testdata
           python -m pip install .[test-wasm]
           python -c "import sys; print(sys.platform)"
       - name: Test
