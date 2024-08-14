@@ -2,6 +2,7 @@
 
 import sys
 import pytest
+import uproot
 
 @pytest.mark.skipif(sys.platform != "emscripten",
                     reason="only test on emscripten")
@@ -10,3 +11,5 @@ def test_http_wasm():
     with uproot.open(url) as f:
         ntpl = f["RNT:CollectionTree"]
         a = ntpl.arrays()
+
+
