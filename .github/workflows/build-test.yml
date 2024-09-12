@@ -20,11 +20,6 @@ jobs:
     runs-on: ${{ matrix.platform }}
     timeout-minutes: 30
 
-    # Required for miniconda to activate conda
-    defaults:
-      run:
-        shell: bash -l {0}
-
     steps:
       - uses: actions/checkout@v4
 
