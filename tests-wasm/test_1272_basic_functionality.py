@@ -105,7 +105,7 @@ def test_read_ttree_http(selenium):
     import uproot
 
     with uproot.open(
-        "http://raw.githubusercontent.com/scikit-hep/scikit-hep-testdata/main/src/skhep_testdata/data/uproot-stl_containers.root",
+        "https://cors.scikit-hep.org/?http://raw.githubusercontent.com/scikit-hep/scikit-hep-testdata/main/src/skhep_testdata/data/uproot-stl_containers.root",
         handler=uproot.source.http.HTTPSource,
     )["tree"] as tree:
         assert awkward.to_list(tree["vector_int32"].array(library="ak")) == [
@@ -124,7 +124,7 @@ def test_read_rntuple_http(selenium):
     import uproot
 
     with uproot.open(
-        "http://raw.githubusercontent.com/scikit-hep/scikit-hep-testdata/main/src/skhep_testdata/data/Run2012BC_DoubleMuParked_Muons_1000evts_rntuple_v1-0-0-0.root",
+        "https://cors.scikit-hep.org/?http://raw.githubusercontent.com/scikit-hep/scikit-hep-testdata/main/src/skhep_testdata/data/Run2012BC_DoubleMuParked_Muons_1000evts_rntuple_v1-0-0-0.root",
         handler=uproot.source.http.HTTPSource,
     ) as f:
         obj = f["Events"]
