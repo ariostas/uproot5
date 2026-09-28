@@ -138,3 +138,13 @@ def test_counter_collides_with_incompatible_branch(tmp_path, branch_types, kwarg
     with uproot.recreate(tmp_path / "file.root") as f:
         with pytest.raises(ValueError, match="collides"):
             f.mktree("t", branch_types, **kwargs)
+
+
+def test_record_field_does_not_duplicate_branch(tmp_path):
+    with uproot.recreate(tmp_path / "file.root") as f:
+        tree = f.mktree("t", {"r_a": np.int32, "r": {"a": np.int32}})
+        names = [
+            datum.get("fName", datum.get("name"))
+            for datum in tree._cascading._branch_data
+        ]
+        assert names == ["r_a", "r"]
