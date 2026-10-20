@@ -3573,6 +3573,9 @@ def _unpack_metadata_and_arrays(obj):
     metadata = {}
 
     for branch_name, branch_array in obj.items():
+        branch_array = uproot._util.pandas_arrow_to_awkward(  # noqa: PLW2901 (overwriting branch_array)
+            branch_array
+        )
         if uproot._util.from_module(branch_array, "pandas"):
             import pandas
 

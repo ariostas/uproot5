@@ -114,6 +114,29 @@ def parse_version(version: str):
     return packaging.version.parse(version)
 
 
+def pandas_arrow_to_awkward(obj):
+    """
+    If ``obj`` is a Pandas Series or ExtensionArray backed by Arrow (as made by
+    ``library="pd"`` for jagged data), returns it as an Awkward Array without
+    iterating over Python objects; otherwise, returns ``obj`` unchanged.
+    """
+    if not from_module(obj, "pandas"):
+        return obj
+    import pandas
+
+    array = obj.array if isinstance(obj, pandas.Series) else obj
+    if not isinstance(getattr(array, "dtype", None), pandas.ArrowDtype):
+        return obj
+    if hasattr(array, "to_awkward"):  # akimbo's AwkwardArrowArray
+        return array.to_awkward()
+    chunked = array.__arrow_array__()
+    out = awkward.from_arrow(chunked)
+    if chunked.null_count == 0 and out.layout.is_option:
+        # Pandas row selections add an all-valid null bitmap
+        out = awkward.Array(out.layout.project(), behavior=out.behavior)
+    return out
+
+
 def from_module(obj, module_name: str) -> bool:
     """
     Returns True if ``obj`` is an instance of a class from a module

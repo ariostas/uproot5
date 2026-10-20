@@ -1286,7 +1286,7 @@ def _regularize_input_type_to_awkward(obj):
             obj = uproot.writing._cascadetree.dataframe_to_dict(obj)
             # Try to retype dtype=object columns
             for k in obj.keys():
-                if obj[k].dtype == object:
+                if not isinstance(obj[k], awkward.Array) and obj[k].dtype == object:
                     obj[k] = awkward.from_iter(obj[k])
             obj = awkward.Array(obj)
 
@@ -1295,7 +1295,9 @@ def _regularize_input_type_to_awkward(obj):
 
     elif isinstance(obj, dict):
         # Sort dictionary keys to avoid issues
-        obj = {k: obj[k] for k in sorted(obj.keys())}
+        obj = {
+            k: uproot._util.pandas_arrow_to_awkward(obj[k]) for k in sorted(obj.keys())
+        }
         obj = awkward.Array(obj)
 
     elif isinstance(obj, awkward.contents.Content):

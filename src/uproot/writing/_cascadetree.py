@@ -567,6 +567,9 @@ class Tree:
 
             provided = {}
             for k, v in data.items():
+                v = uproot._util.pandas_arrow_to_awkward(  # noqa: PLW2901 (overwriting v)
+                    v
+                )
                 if not uproot._util.from_module(
                     v, "pandas"
                 ) and not uproot._util.from_module(v, "awkward"):
@@ -1651,7 +1654,9 @@ def dataframe_to_dict(df):
     """
     out = {"index": df.index.values}
     for column_name in df.columns:
-        out[str(column_name)] = df[column_name].values
+        out[str(column_name)] = uproot._util.pandas_arrow_to_awkward(
+            df[column_name].values
+        )
     return out
 
 
