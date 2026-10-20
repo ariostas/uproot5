@@ -1453,19 +1453,19 @@ def test_pandas_vector_TLorentzVector():
     ] as tree:
         result = tree["muonp4"].array(library="pd")
 
-        assert result.ak["fP", "fX"][0] == [
+        assert result.ak["fP", "fX"][0].tolist() == [
             -52.89945602416992,
             37.7377815246582,
         ]
-        assert result.ak["fP", "fY"][0] == [
+        assert result.ak["fP", "fY"][0].tolist() == [
             -11.654671669006348,
             0.6934735774993896,
         ]
-        assert result.ak["fP", "fZ"][0] == [
+        assert result.ak["fP", "fZ"][0].tolist() == [
             -8.16079330444336,
             -11.307581901550293,
         ]
-        assert result.ak["fE"][0] == [
+        assert result.ak["fE"][0].tolist() == [
             54.77949905395508,
             39.401695251464844,
         ]

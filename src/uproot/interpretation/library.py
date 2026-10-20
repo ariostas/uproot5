@@ -24,6 +24,7 @@ Lazy arrays (:doc:`uproot.behaviors.TBranch.lazy`) can only use the
 
 from __future__ import annotations
 
+import contextlib
 import json
 
 import awkward
@@ -797,6 +798,12 @@ def _pandas_only_series(pandas, original_arrays, expression_context):
     return arrays, names
 
 
+def _register_ak_accessor():
+    # akimbo registers the .ak accessor; it is only required for jagged data
+    with contextlib.suppress(ImportError):
+        uproot.extras.akimbo_pandas()
+
+
 def _process_array_for_pandas(
     array,
     finalize,
@@ -832,10 +839,7 @@ def _process_array_for_pandas(
                 ) and array.layout.minmax_depth == (1, 1):
                     array = array.to_numpy()
                 else:
-                    pandas = uproot.extras.pandas()
-                    array = pandas.arrays.ArrowExtensionArray(
-                        awkward.to_arrow(array, extensionarray=False)
-                    )
+                    array = uproot.extras.akimbo_pandas().to_pandas_array(array)
             else:
                 array = _object_to_awkward_array(awkward, form, array)
         return array
@@ -873,8 +877,7 @@ class Pandas(Library):
 
     def finalize(self, array, branch, interpretation, entry_start, entry_stop, options):
         pandas = self.imported
-        uproot.extras.akimbo_pandas()  # Automatically adds .ak accessors to Pandas DataFrames
-        # recovering the behavior of AwkwardExtensionArrays
+        _register_ak_accessor()
 
         index = _pandas_basic_index(pandas, entry_start, entry_stop)
 

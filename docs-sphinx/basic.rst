@@ -657,23 +657,23 @@ These "nested" NumPy arrays are not slicable as multidimensional arrays because 
     # File "<stdin>", line 1, in <module>
     # IndexError: too many indices for array: array is 1-dimensional, but 2 were indexed
 
-The Pandas form for this type of data is a DataFrame with PyArrow dtype, provided by the `Pandas ArrowExtensionArray <https://pandas.pydata.org/docs/reference/api/pandas.arrays.ArrowExtensionArray.html>`__ type.
+The Pandas form for this type of data is a DataFrame with ``awkward`` dtype, provided by the `akimbo <https://github.com/intake/akimbo>`__ package: the columns are stored as Arrow arrays (a `pandas.arrays.ArrowExtensionArray <https://pandas.pydata.org/docs/reference/api/pandas.arrays.ArrowExtensionArray.html>`__) and each cell is an Awkward Array.
 
 .. code-block:: python
 
     >>> events.arrays(filter_name="/(Jet|Muon)_P[xyz]/", library="pd")
-                                    Jet_Px  ...                  Muon_Pz
-    0                                     []  ...  [ -8.160793 -11.307582]
-    1                           [-38.874714]  ...              [20.199968]
-    2                                     []  ...    [11.168285 36.96519 ]
-    3     [-71.69521   36.60637  -28.866419]  ...    [403.84845 335.0942 ]
-    4                  [3.8801618 4.97958  ]  ...  [-89.69573   20.115053]
-    ...                                  ...  ...                      ...
-    2416                         [37.071465]  ...               [61.71579]
-    2417             [-33.196457 -26.086025]  ...              [160.81792]
-    2418                        [-3.7148185]  ...              [-52.66375]
-    2419             [-36.361286 -15.256871]  ...              [162.17632]
-    2420                                  []  ...              [54.719437]
+                        Jet_Px              Jet_Py  ...         Muon_Py         Muon_Pz
+    0                       []                  []  ...  [-11.7, 0.693]  [-8.16, -11.3]
+    1                  [-38.9]              [19.9]  ...         [-24.4]          [20.2]
+    2                       []                  []  ...   [-21.7, 29.8]      [11.2, 37]
+    3     [-71.7, 36.6, -28.9]  [93.6, 21.8, 9.32]  ...    [-85.8, -14]      [404, 335]
+    4             [3.88, 4.98]      [-75.2, -39.2]  ...    [67.2, 25.4]   [-89.7, 20.1]
+    ...                    ...                 ...  ...             ...             ...
+    2416                [37.1]              [20.1]  ...         [-14.6]          [61.7]
+    2417        [-33.2, -26.1]      [-59.7, -19.1]  ...         [-14.2]           [161]
+    2418               [-3.71]             [-37.2]  ...         [-15.3]         [-52.7]
+    2419        [-36.4, -15.3]       [10.2, -27.2]  ...          [63.6]           [162]
+    2420                    []                  []  ...         [-35.7]          [54.7]
 
     [2421 rows x 6 columns]
 

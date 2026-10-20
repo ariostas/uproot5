@@ -286,7 +286,8 @@ def graphed_executors():
 
 def akimbo_pandas():
     """
-    Imports and returns ``akimbo.pandas``.
+    Imports and returns ``akimbo.pandas``, which also registers the ``.ak``
+    accessor on Pandas Series and DataFrames.
     """
     try:
         import akimbo.pandas
@@ -295,8 +296,12 @@ def akimbo_pandas():
     pip install akimbo
 or
     conda install -c conda-forge akimbo""") from err
-    else:
-        return akimbo.pandas
+    if not hasattr(akimbo.pandas, "to_pandas_array"):
+        raise ImportError(
+            f"akimbo {akimbo.__version__} is too old for Uproot's Pandas output; "
+            "it needs akimbo.pandas.to_pandas_array (prototype branch)"
+        )
+    return akimbo.pandas
 
 
 def cupy():
